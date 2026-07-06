@@ -135,7 +135,7 @@
 /* ================= WERTE (scroll wheel) ================= */
 .werte {
   padding-block: 0 9.375rem;  /* 150px air below the wheel before the footer */
-  height: 350vh;              /* scroll runway: 7 stops */
+  height: 420vh;              /* scroll runway: 7 stops, unhurried */
 }
 .werte__sticky {
   position: sticky;
@@ -198,6 +198,7 @@
   width: 10rem;
   height: 10rem;
   margin: -5rem 0 0 -5rem;
+  cursor: pointer; /* values are tappable — tap brings one into focus */
   transform: rotate(var(--angle))
              translateY(calc(var(--wheel-size) / -2))
              rotate(calc(-1 * var(--angle) - var(--wheel-turn)));
@@ -228,7 +229,7 @@
   .werte__stage { gap: var(--space-xl); grid-template-columns: minmax(0, 1fr) minmax(0, 19rem); }
 }
 @media (max-width: 48rem) {
-  .werte { height: 300vh; }
+  .werte { height: 360vh; }
   .werte__sticky { padding-top: var(--header-h); } /* heading clears the fixed header */
   .wheel { --wheel-size: min(28rem, 120vw, 44svh); }
   .werte__stage {
@@ -257,7 +258,7 @@
   .werte__sticky { position: static; height: auto; overflow: visible; display: block; }
   .werte__stage { display: flex; flex-direction: column; align-items: center; gap: var(--space-lg); }
   .wheel { width: auto; height: auto; transform: none; display: flex; flex-direction: column; gap: var(--space-md); margin: 0; }
-  .wheel__item { position: static; margin: 0; transform: none !important; opacity: 1; width: auto; height: auto; }
+  .wheel__item { position: static; margin: 0; transform: none !important; opacity: 1; width: auto; height: auto; cursor: default; }
   .wheel__item .bubble { width: 12rem; height: 12rem; }
   .werte__panel { display: none; }
 }

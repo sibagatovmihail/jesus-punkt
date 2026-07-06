@@ -71,7 +71,7 @@ Use these named tiers consistently across **all** stylesheets:
 - Buttons: primary hovers to **accent** (`#F9C855` + ink text); outline hovers to **ink** fill + creme text; both lift −2px.
 - Cards/rows lift with `--shadow-soft`/`--shadow-card`; kleingruppen rows indent + extend their arrow; textlinks slide their arrow.
 - The sermon carousel is **full-bleed**: `width: 100vw` breakout, track aligned to the container, overflow visible to the screen edge, `padding-block` + negative margin so hover shadows are never clipped. Carousels init per `.carousel[id]` with `data-carousel-prev/next="<id>"` buttons.
-- The Werte section is a **pinned scroll wheel**: sticky 100dvh stage inside a 350vh section, scroll progress steps the ring through all 7 values. All bubbles are sand; only the active one turns accent. On phones the wheel is intentionally wider than the screen (stage clips it) and the active bubble moves to the ring's center. `prefers-reduced-motion` collapses it to a static list.
+- The Werte section is a **pinned scroll wheel**: sticky 100dvh stage inside a 420vh section (360vh phone), scroll progress steps the ring through all 7 values; tapping a value jumps the scroll position into its segment (seamless while pinned). All bubbles are sand; only the active one turns accent. On phones the wheel is intentionally wider than the screen (stage clips it) and the active bubble moves to the ring's center. `prefers-reduced-motion` collapses it to a static list.
 - Tinted (`--creme`) sections are framed by **zig-zag strips** (`.zig--top` / `.zig--bottom`, conic-gradient mask) — a background-color change never happens on a straight line.
 
 ## Typography

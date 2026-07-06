@@ -98,6 +98,25 @@
       };
       window.addEventListener('scroll', onWerteScroll, { passive: true });
       onWerteScroll();
+
+      /* tap a value to bring it into focus: jump the pinned scroll position
+         into that value's segment — invisible while pinned, only the wheel turns */
+      items.forEach(function (it, i) {
+        it.setAttribute('role', 'button');
+        it.setAttribute('tabindex', '0');
+        it.setAttribute('aria-label', it.querySelector('.bubble__name').textContent + ' anzeigen');
+        var focusValue = function () {
+          var rect = werte.getBoundingClientRect();
+          var runway = rect.height - window.innerHeight;
+          if (runway <= 0) return;
+          var top = rect.top + window.scrollY;
+          window.scrollTo({ top: top + runway * ((i + 0.5) / 7), behavior: 'instant' });
+        };
+        it.addEventListener('click', focusValue);
+        it.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusValue(); }
+        });
+      });
     }
   }
 
