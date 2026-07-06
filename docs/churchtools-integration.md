@@ -94,7 +94,7 @@ Gründe: zweites System neben ChurchTools (doppelte Pflege, Drift), Hosting-/Liz
 Einarbeitung. Statische Texte ändern sich selten genug, dass der Weg über das Website-Team
 schneller ist als jede CMS-Schulung.
 
-**Optionaler späterer Ausbau:** ein Git-basiertes Mini-CMS (Sveltia CMS oder Pages CMS —
-kostenlos, keine Server, Browser-Editor auf JSON/Markdown-Dateien im Repo) ausschließlich
-für die statischen Texte. Lernaufwand: Minuten; Änderungen laufen als Commits durch dieselbe
-Pipeline wie Code.
+**Ausbau beschlossen → siehe `docs/cms-integration-plan.md`:** ein Git-basiertes Mini-CMS
+(Sveltia) für statische Texte und die Team-Seite, kombiniert mit dem CT-Proxy auf einem
+Cloudflare Worker. Der Plan dort ersetzt Abschnitt 1/5 dieser Datei, wo sie sich widersprechen
+(Worker statt Vercel; ISO-Daten statt vorformatierter Strings).

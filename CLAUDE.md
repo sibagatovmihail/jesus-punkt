@@ -100,7 +100,7 @@ Wrap all text elements (`span`, `p`, headings, `a`) in a `<div>` cover element �
 ## ChurchTools Integration
 
 Dynamic slots are marked in the HTML with `data-ct` attributes (flyer, events + calendar, sermons, kleingruppen, team).
-`js/data.js` renders them from `data/mock/*.json` — swapping to live ChurchTools means changing only its URL map. Static markup inside the slots is the no-JS fallback; keep it in sync with the mock data. See `docs/churchtools-integration.md` for the endpoint map, auth model, rollout plan, and the content-curation strategy (Content-Pflege). Do not hardcode content into those slots without keeping the `data-ct` markers.
+`js/data.js` renders them from `data/mock/*.json` — swapping to live ChurchTools means changing only its URL map. Static markup inside the slots is the no-JS fallback; keep it in sync with the mock data. See `docs/churchtools-integration.md` for the endpoint map and auth model, and `docs/cms-integration-plan.md` for the CMS × ChurchTools editing architecture and rollout phases. Do not hardcode content into those slots without keeping the `data-ct` markers.
 
 ## Anti-Pattern Guardrails
 
