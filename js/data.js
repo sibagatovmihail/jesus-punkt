@@ -20,10 +20,58 @@
   var NOW = new Date('2026-07-06T12:00:00');
   function now() { return NOW || new Date(); }
 
-  var WD = new Intl.DateTimeFormat('de-DE', { weekday: 'short' });
-  var DM = new Intl.DateTimeFormat('de-DE', { day: '2-digit', month: 'short' });
-  var MY = new Intl.DateTimeFormat('de-DE', { month: 'long', year: 'numeric' });
-  var TIME = new Intl.DateTimeFormat('de-DE', { hour: '2-digit', minute: '2-digit' });
+  /* page locale (set on <html lang> by the i18n build; German is the default) */
+  var LANG = (document.documentElement.lang || 'de').slice(0, 2);
+  var LOCALE = { de: 'de-DE', en: 'en-GB', uk: 'uk-UA' }[LANG] || 'de-DE';
+  /* page links stay inside the current locale tree (/en/…, /uk/…) */
+  var PAGE_BASE = BASE + (LANG === 'de' ? '' : LANG + '/');
+
+  /* dynamic content we control: recurring event types + their standard meta lines.
+     Custom German titles pass through untranslated — the events happen in German. */
+  var I18N = {
+    en: {
+      empty: 'No events on the calendar this month — have a look at the next one.',
+      titles: { 'Gottesdienst': 'Sunday service', 'Elevate Jugend': 'Elevate youth night', 'Gebet': 'Prayer', 'Hauskreis-Abend': 'Home group night' },
+      metas: {
+        'Kruseshofer Str. 20 · vor Ort und im Livestream': 'Kruseshofer Str. 20 · on site and via livestream',
+        'Für Jugendliche zwischen 13 und 29 Jahren': 'For teens and young adults aged 13–29',
+        'Gemeinsames Gebet · alle sind willkommen': 'Praying together · everyone is welcome',
+        'In Wohnzimmern in ganz Neubrandenburg': 'In living rooms all over Neubrandenburg'
+      },
+      meetings: {
+        'dienstags · 19:30': 'Tuesdays · 19:30',
+        'mittwochs · 19:30': 'Wednesdays · 19:30',
+        'donnerstags · 19:30': 'Thursdays · 19:30',
+        'montags · 19:00': 'Mondays · 19:00',
+        'freitags · 20:00': 'Fridays · 20:00'
+      }
+    },
+    uk: {
+      empty: 'У цьому місяці подій у календарі немає — загляньте в наступний.',
+      titles: { 'Gottesdienst': 'Богослужіння', 'Elevate Jugend': 'Молодіжка Elevate', 'Gebet': 'Молитва', 'Hauskreis-Abend': 'Домашня група' },
+      metas: {
+        'Kruseshofer Str. 20 · vor Ort und im Livestream': 'Kruseshofer Str. 20 · наживо та в трансляції',
+        'Für Jugendliche zwischen 13 und 29 Jahren': 'Для молоді від 13 до 29 років',
+        'Gemeinsames Gebet · alle sind willkommen': 'Спільна молитва · запрошуємо всіх',
+        'In Wohnzimmern in ganz Neubrandenburg': 'У домівках по всьому Нойбранденбургу'
+      },
+      meetings: {
+        'dienstags · 19:30': 'щовівторка · 19:30',
+        'mittwochs · 19:30': 'щосереди · 19:30',
+        'donnerstags · 19:30': 'щочетверга · 19:30',
+        'montags · 19:00': 'щопонеділка · 19:00',
+        'freitags · 20:00': 'щопʼятниці · 20:00'
+      }
+    }
+  };
+  function trTitle(t) { return (I18N[LANG] && I18N[LANG].titles[t]) || t; }
+  function trMeta(m) { return (I18N[LANG] && I18N[LANG].metas[m]) || m; }
+  function trMeeting(m) { return (I18N[LANG] && I18N[LANG].meetings[m]) || m; }
+
+  var WD = new Intl.DateTimeFormat(LOCALE, { weekday: 'short' });
+  var DM = new Intl.DateTimeFormat(LOCALE, { day: '2-digit', month: 'short' });
+  var MY = new Intl.DateTimeFormat(LOCALE, { month: 'long', year: 'numeric' });
+  var TIME = new Intl.DateTimeFormat(LOCALE, { hour: '2-digit', minute: '2-digit' });
 
   function fmtWeekdayDate(d) {
     var wd = WD.format(d).replace('.', '');
@@ -46,8 +94,8 @@
         '<div><span class="event-row__date">' + fmtWeekdayDate(d) + '</span></div>' +
       '</div>' +
       '<div class="event-row__body">' +
-        '<div><h3 class="event-row__title">' + esc(ev.title) + '</h3></div>' +
-        '<div><p class="event-row__meta">' + esc(ev.meta) + '</p></div>' +
+        '<div><h3 class="event-row__title">' + esc(trTitle(ev.title)) + '</h3></div>' +
+        '<div><p class="event-row__meta">' + esc(trMeta(ev.meta)) + '</p></div>' +
       '</div>';
     var cls = 'event-row' + (highlight ? ' event-row--highlight' : '');
     return href
@@ -73,8 +121,8 @@
     var others = upcoming.filter(function (e) { return e !== service && e.type !== 'gottesdienst'; }).slice(0, 2);
     if (!service && !others.length) return;
     var rows = [];
-    if (service) rows.push(eventRowHTML(service, true, BASE + 'events/'));
-    others.forEach(function (e) { rows.push(eventRowHTML(e, false, BASE + 'events/')); });
+    if (service) rows.push(eventRowHTML(service, true, PAGE_BASE + 'events/'));
+    others.forEach(function (e) { rows.push(eventRowHTML(e, false, PAGE_BASE + 'events/')); });
     slot.innerHTML = rows.join('');
   }
 
@@ -98,7 +146,8 @@
 
     function render() {
       var y = Math.floor(cur / 12), m = cur % 12;
-      label.textContent = MY.format(new Date(y, m, 1));
+      var lbl = MY.format(new Date(y, m, 1));
+      label.textContent = lbl.charAt(0).toUpperCase() + lbl.slice(1); /* uk months come lowercase */
       prev.disabled = cur <= minM;
       next.disabled = cur >= maxM;
       var monthEvents = events.filter(function (e) {
@@ -106,7 +155,8 @@
         return d.getFullYear() === y && d.getMonth() === m;
       });
       if (!monthEvents.length) {
-        slot.innerHTML = '<li><div class="calendar__empty"><p>In diesem Monat stehen keine Termine im Kalender — schau gern im nächsten Monat vorbei.</p></div></li>';
+        var msg = (I18N[LANG] && I18N[LANG].empty) || 'In diesem Monat stehen keine Termine im Kalender — schau gern im nächsten Monat vorbei.';
+        slot.innerHTML = '<li><div class="calendar__empty"><p>' + msg + '</p></div></li>';
         return;
       }
       slot.innerHTML = monthEvents.map(function (e) {
@@ -154,13 +204,13 @@
   /* ---------- groups ---------- */
   function renderGroups(data) {
     document.querySelectorAll('[data-ct="groups"]').forEach(function (list) {
-      var href = list.closest('#hauskreise') ? '#hauskreise' : BASE + 'gemeindeleben/#hauskreise';
+      var href = list.closest('#hauskreise') ? '#hauskreise' : PAGE_BASE + 'gemeindeleben/#hauskreise';
       list.innerHTML = data.groups.map(function (g) {
         return (
           '<li><a class="kg-row" href="' + href + '">' +
             '<div class="kg-row__info">' +
               '<div><h3 class="kg-row__name">' + esc(g.name) + '</h3></div>' +
-              '<div><p class="kg-row__meta">' + esc(g.meeting) + '</p></div>' +
+              '<div><p class="kg-row__meta">' + esc(trMeeting(g.meeting)) + '</p></div>' +
             '</div>' +
             '<div class="kg-row__arrow" aria-hidden="true">' +
               '<svg width="62" height="12" viewBox="0 0 62 12" fill="none"><path d="M0 6h59.5M55 1.5 60.5 6 55 10.5" stroke="currentColor" stroke-width="2"/></svg>' +

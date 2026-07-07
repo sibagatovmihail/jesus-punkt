@@ -83,6 +83,45 @@
   .nav-pill__link:hover { background: var(--accent); color: #000; }
 }
 
+/* language switcher — desktop chip; the fullscreen menu carries it ≤64rem */
+.lang-switch {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(1.25rem);
+  backdrop-filter: blur(1.25rem);
+  border-radius: var(--radius);
+  transition: background var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
+}
+.header.is-scrolled .lang-switch {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: inset 0 0 0 1px var(--line-ink), var(--shadow-soft);
+}
+.lang-switch__link {
+  display: block;
+  padding: 1rem 0.75rem;
+  border-radius: var(--radius);
+  font: 700 0.6875rem / 1 var(--font-ui);
+  letter-spacing: 0.06em;
+  color: var(--nav-muted);
+  transition: color var(--t-fast) var(--ease);
+}
+.lang-switch__link:hover { color: #000; }
+.lang-switch__link.is-active { color: var(--ink); }
+.lang-switch__link.is-active::after {
+  content: "";
+  display: inline-block;
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-left: 0.25rem;
+  vertical-align: 0.06em;
+}
+@media (max-width: 64rem) {
+  .lang-switch { display: none; }
+}
+
 /* burger (≤48rem) */
 .burger {
   display: none;
@@ -157,6 +196,23 @@
 .nav-panel.is-open .nav-panel__link:nth-child(4) { --d: 0.28s; }
 .nav-panel.is-open .nav-panel__link:nth-child(5) { --d: 0.34s; }
 .nav-panel.is-open .nav-panel__link:nth-child(6) { --d: 0.40s; }
+.nav-panel__lang {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition: opacity var(--t-med) var(--ease) 0.44s, transform var(--t-med) var(--ease) 0.44s;
+}
+.nav-panel.is-open .nav-panel__lang { opacity: 1; transform: none; }
+.nav-panel__lang-link {
+  font: 700 0.9375rem / 1 var(--font-ui);
+  color: var(--nav-muted);
+  transition: color var(--t-fast) var(--ease);
+}
+.nav-panel__lang-link:hover { color: var(--ink); }
+.nav-panel__lang-link.is-active { color: var(--gold-text); }
 .nav-panel__cta {
   margin-top: 2rem;
   opacity: 0;

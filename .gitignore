@@ -2,3 +2,6 @@
 tools/node_modules/
 tools/figfile/
 docs/superpowers/plans/shots/
+# generated locale trees (built at deploy time by tools/i18n-build.py)
+/en/
+/uk/

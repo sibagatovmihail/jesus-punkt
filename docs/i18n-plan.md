@@ -1,5 +1,10 @@
 # Übersetzung / i18n Plan — Deutsch · English · Українська
 
+> **Status 2026-07-07: T1–T3 executed.** Generator `tools/i18n-build.py`, dictionaries
+> `data/i18n/{en,uk}.json` (173 strings each), switcher in header/menu/footer, hreflang,
+> locale-aware `js/data.js`/`js/main.js`, Arimo-Cyrillic subset for uk. Open: native review
+> of the uk/en copy (§7) and the Gottesdienst-translation question (§9.1).
+
 Companion to `cms-integration-plan.md` (editing architecture) and `churchtools-integration.md`
 (dynamic data). Goal: the site speaks **German (source of truth), English, and Ukrainian** —
 without tripling maintenance or forking the markup.

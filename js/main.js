@@ -2,6 +2,15 @@
 (function () {
   'use strict';
 
+  /* page locale (set on <html lang> by the i18n build; German is the default) */
+  var LANG = (document.documentElement.lang || 'de').slice(0, 2);
+  var UI_I18N = {
+    de: { open: 'Menü öffnen', close: 'Menü schließen', show: ' anzeigen' },
+    en: { open: 'Open menu', close: 'Close menu', show: ' — show' },
+    uk: { open: 'Відкрити меню', close: 'Закрити меню', show: ' — показати' }
+  };
+  var UI = UI_I18N[LANG] || UI_I18N.de;
+
   /* ---------- Fixed header: solid once scrolled ---------- */
   var header = document.querySelector('.header');
   if (header) {
@@ -53,15 +62,36 @@
     var wheel = werte.querySelector('.wheel');
     var items = wheel ? Array.prototype.slice.call(wheel.querySelectorAll('.wheel__item')) : [];
     var panel = werte.querySelector('.werte__panel');
-    var LINES = [
-      'Wir leben, was wir sagen.',
-      'Wir sind am Puls der Zeit.',
-      'Wir geben Gott unser Bestes, nachdem er sein Bestes für uns gegeben hat.',
-      'Wir schaffen eine liebevolle „Welcome Home“-Atmosphäre.',
-      'Die Freude an Gott ist unsere Stärke.',
-      'Wir segnen, weil wir gesegnet sind.',
-      'Wir lieben Menschen.'
-    ];
+    var LINES_I18N = {
+      de: [
+        'Wir leben, was wir sagen.',
+        'Wir sind am Puls der Zeit.',
+        'Wir geben Gott unser Bestes, nachdem er sein Bestes für uns gegeben hat.',
+        'Wir schaffen eine liebevolle „Welcome Home“-Atmosphäre.',
+        'Die Freude an Gott ist unsere Stärke.',
+        'Wir segnen, weil wir gesegnet sind.',
+        'Wir lieben Menschen.'
+      ],
+      en: [
+        'We live what we say.',
+        'We keep our finger on the pulse of the times.',
+        'We give God our best — after he gave his best for us.',
+        'We create a loving “Welcome Home” atmosphere.',
+        'The joy of the Lord is our strength.',
+        'We bless because we are blessed.',
+        'We love people.'
+      ],
+      uk: [
+        'Ми живемо тим, що говоримо.',
+        'Ми тримаємо руку на пульсі часу.',
+        'Ми віддаємо Богові найкраще — адже Він віддав найкраще за нас.',
+        'Ми створюємо атмосферу любові «Welcome Home».',
+        'Радість у Господі — наша сила.',
+        'Ми благословляємо, бо самі благословенні.',
+        'Ми любимо людей.'
+      ]
+    };
+    var LINES = LINES_I18N[LANG] || LINES_I18N.de;
     if (wheel && items.length === 7 && panel) {
       var numEl = panel.querySelector('.werte__panel-num');
       var nameEl = panel.querySelector('.werte__panel-name');
@@ -104,7 +134,7 @@
       items.forEach(function (it, i) {
         it.setAttribute('role', 'button');
         it.setAttribute('tabindex', '0');
-        it.setAttribute('aria-label', it.querySelector('.bubble__name').textContent + ' anzeigen');
+        it.setAttribute('aria-label', it.querySelector('.bubble__name').textContent + UI.show);
         var focusValue = function () {
           var rect = werte.getBoundingClientRect();
           var runway = rect.height - window.innerHeight;
@@ -128,7 +158,7 @@
     panel.classList.toggle('is-open', open);
     document.documentElement.classList.toggle('menu-open', open);
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    burger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    burger.setAttribute('aria-label', open ? UI.close : UI.open);
   }
 
   if (burger && panel) {

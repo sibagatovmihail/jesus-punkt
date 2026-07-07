@@ -72,6 +72,7 @@ Use these named tiers consistently across **all** stylesheets:
 - Cards/rows lift with `--shadow-soft`/`--shadow-card`; kleingruppen rows indent + extend their arrow; textlinks slide their arrow.
 - The sermon carousel is **full-bleed**: `width: 100vw` breakout, track aligned to the container, overflow visible to the screen edge, `padding-block` + negative margin so hover shadows are never clipped. Carousels init per `.carousel[id]` with `data-carousel-prev/next="<id>"` buttons.
 - The Werte section is a **pinned scroll wheel**: sticky 100dvh stage inside a 420vh section (360vh phone), scroll progress steps the ring through all 7 values; tapping a value jumps the scroll position into its segment (seamless while pinned). All bubbles are sand; only the active one turns accent. On phones the wheel is intentionally wider than the screen (stage clips it) and the active bubble moves to the ring's center. `prefers-reduced-motion` collapses it to a static list.
+- **i18n:** German markup is the single source. `/en/` and `/uk/` are generated at deploy by `tools/i18n-build.py` from `data/i18n/*.json` — a new/changed German string needs dictionary entries or the build warns and ships German fallback. Ukrainian runs entirely on Arimo (Cyrillic subset in `fonts/`). Impressum/Datenschutz stay German-only.
 - Tinted (`--creme`) sections are framed by **zig-zag strips** (`.zig--top` / `.zig--bottom`, conic-gradient mask) — a background-color change never happens on a straight line.
 
 ## Typography
@@ -119,7 +120,9 @@ ueber-uns/ events/ gemeindeleben/ angebote/ spenden/ kontakt/ impressum/
 design-system.html    living styleguide (tokens + components)
 styles/               tokens.css → base.css → components.css → home.css | pages.css
 js/main.js            header state, nav glider, fullscreen nav, carousels, Werte wheel, galleries — no frameworks
-js/data.js            renders data-ct slots from data/mock/*.json (swap URL map for live ChurchTools)
+js/data.js            renders data-ct slots from data/mock/*.json (swap URL map for live ChurchTools); locale-aware
+data/i18n/            en.json + uk.json (German string → translation); de markup is the source
+tools/i18n-build.py   generates /en/ + /uk/ trees at deploy (never edit those by hand; gitignored)
 img/  fonts/  data/   assets; data/ holds mock JSON mirroring ChurchTools responses
 docs/  tools/         design spec, site structure, CT plan · fig parser + screenshot CDP tool
 site/                 ARCHIVED v3 prototype (pre-Heritage-Gold) — do not extend

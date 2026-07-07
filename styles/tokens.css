@@ -76,3 +76,10 @@
   --t-med: 220ms;
   --t-slow: 450ms;
 }
+
+/* Ukrainian pages: Raveo and Sinkin Sans ship no Cyrillic — the whole page
+   runs on Arimo (Arial-metric, Cyrillic subset in fonts/) for a uniform look. */
+html[lang="uk"] {
+  --font-display: "Arimo", Arial, "Helvetica Neue", sans-serif;
+  --font-body: "Arimo", Arial, "Helvetica Neue", sans-serif;
+}
