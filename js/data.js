@@ -8,16 +8,19 @@
   var BASE = new URL('..', document.currentScript.src).pathname;
 
   var URLS = {
-    events: BASE + 'data/mock/events.json',
-    flyer: BASE + 'data/mock/flyer.json',
+    /* events are LIVE: fetched from the public ChurchTools calendars at deploy
+       (tools/ct-events.py, daily cron in pages.yml); mock stays the fallback */
+    events: BASE + 'data/ct/events.json',
+    eventsFallback: BASE + 'data/mock/events.json',
+    flyer: BASE + 'data/ct/flyer.json',
+    flyerFallback: BASE + 'data/mock/flyer.json',
     sermons: BASE + 'data/mock/sermons.json',
     groups: BASE + 'data/mock/groups.json',
-    team: BASE + 'data/mock/team.json'
+    team: BASE + 'data/content/team.json' /* CMS-managed (photos need explicit consent — never from CT) */
   };
 
-  /* "now" for mock data — keeps the demo deterministic while the JSON is static.
-     Set to null to use the real clock once live data is wired up. */
-  var NOW = new Date('2026-07-06T12:00:00');
+  /* events are real now — use the real clock (kept overridable for demos) */
+  var NOW = null;
   function now() { return NOW || new Date(); }
 
   /* page locale (set on <html lang> by the i18n build; German is the default) */
@@ -229,7 +232,7 @@
     return (
       '<div class="team-photo' + (extraClass ? ' ' + extraClass : '') + '">' +
         (person.photo
-          ? '<img src="' + esc(person.photo) + '" alt="' + esc(person.name) + '" loading="lazy">'
+          ? '<img src="' + esc(BASE + String(person.photo).replace(/^\//, '')) + '" alt="' + esc(person.name) + '" loading="lazy">'
           : '<span class="team-photo__initials">' + initials(person.name) + '</span>') +
       '</div>'
     );
@@ -272,13 +275,17 @@
   /* ---------- boot: fetch only what the page needs ---------- */
   function boot() {
     if (document.querySelector('[data-ct="events"]')) {
-      getJSON(URLS.events).then(function (d) {
-        renderHomeEvents(d);
-        initCalendar(d);
-      }).catch(function (e) { console.warn('[data] events:', e.message); });
+      getJSON(URLS.events)
+        .catch(function () { return getJSON(URLS.eventsFallback); })
+        .then(function (d) {
+          renderHomeEvents(d);
+          initCalendar(d);
+        }).catch(function (e) { console.warn('[data] events:', e.message); });
     }
     if (document.querySelector('[data-ct="flyer"]')) {
-      getJSON(URLS.flyer).then(renderFlyer).catch(function (e) { console.warn('[data] flyer:', e.message); });
+      getJSON(URLS.flyer)
+        .catch(function () { return getJSON(URLS.flyerFallback); })
+        .then(renderFlyer).catch(function (e) { console.warn('[data] flyer:', e.message); });
     }
     if (document.querySelector('[data-ct="sermons"]')) {
       getJSON(URLS.sermons).then(renderSermons).catch(function (e) { console.warn('[data] sermons:', e.message); });

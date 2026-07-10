@@ -86,16 +86,16 @@
           <div class="kv">
             <div class="kv__row">
               <div><span class="kv__key">Kontoinhaber</span></div>
-              <div><span class="kv__val">VIA Movement e.V.</span></div>
+              <div><span class="kv__val" data-content="spenden.kontoinhaber">VIA Movement e.V.</span></div>
             </div>
             <div class="kv__row">
               <div><span class="kv__key">IBAN</span></div>
               <!-- TODO: IBAN vor Launch eintragen (von der Gemeindeleitung bestätigen lassen) -->
-              <div><span class="kv__val">DE·· ···· ···· ···· ···· ··</span></div>
+              <div><span class="kv__val" data-content="spenden.iban">DE·· ···· ···· ···· ···· ··</span></div>
             </div>
             <div class="kv__row">
               <div><span class="kv__key">Verwendungszweck</span></div>
-              <div><span class="kv__val">Spende Jesus Punkt</span></div>
+              <div><span class="kv__val" data-content="spenden.verwendungszweck">Spende Jesus Punkt</span></div>
             </div>
           </div>
         </div>
@@ -169,11 +169,11 @@
       </div>
     </div>
     <div class="footer__legal">
-      <div><span>© 2026 Jesus Punkt</span></div>
+      <div><span>© 2026 Jesus Punkt · <a href="https://viasmedia.com/" target="_blank" rel="noopener">Made by viasmedia</a></span></div>
       <div>
         <span>
           <a href="/impressum/">Impressum</a> ·
-          <a href="https://jesus-punkt.de/datenschutzerklaerung/" target="_blank" rel="noopener">Datenschutz</a> ·
+          <a href="/datenschutz/">Datenschutz</a> ·
           <a href="/en/spenden/" hreflang="en" lang="en" data-lang-link>English</a> ·
           <a href="/uk/spenden/" hreflang="uk" lang="uk" data-lang-link>Українська</a>
         </span>
@@ -183,5 +183,6 @@
 </footer>
 
 <script src="/js/main.js" defer></script>
+<script src="/js/consent.js" defer></script>
 </body>
 </html>

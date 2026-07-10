@@ -93,6 +93,16 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 /* ---- Section rhythm ---- */
 .section { padding-block: var(--section-pad); }
 
+/* ---- Appearance reveals (JS adds .reveal, then .is-in on enter; classes
+        are stripped after the transition so component hovers stay intact) ---- */
+.reveal { opacity: 0; transform: translateY(0.75rem); }
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 600ms var(--ease) var(--rv-d, 0s),
+              transform 600ms var(--ease) var(--rv-d, 0s);
+}
+
 /* ---- Headings ---- */
 .h1 {
   font: 700 var(--fs-h1) / var(--lh-display) var(--font-display);
@@ -106,15 +116,17 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .h2--xl { font-size: var(--fs-h2-xl); }
 /* the "Punkt" — gold dot after a heading */
+/* gold dot glued to the last word: an inline-block would be an atomic inline —
+   browsers may break the line before it, wrapping the dot alone. A plain inline
+   box whose content is a no-break space cannot be separated from the text; the
+   dot itself is painted as a background circle inside that box. */
 .h2--dot::after {
-  content: "";
-  display: inline-block;
-  width: 0.6em;
-  height: 0.6em;
-  border-radius: 50%;
-  background: var(--accent);
-  margin-left: 0.08em;
-  vertical-align: baseline;
+  content: "\00A0";
+  font-size: 0.42em; /* dot geometry scales with the heading */
+  padding-right: 1em;
+  margin-left: -0.05em;
+  vertical-align: middle; /* dot centres on the text, not the baseline */
+  background: radial-gradient(circle closest-side, var(--accent) 97%, transparent) right center / 1em 1em no-repeat;
 }
 .h3 {
   font: 700 var(--fs-h3) / 1.2 var(--font-display);

@@ -89,6 +89,47 @@
     });
   }
 
+  /* ---------- Appearance reveals (scroll-triggered, once) ---------- */
+  if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+    var revealTargets = document.querySelectorAll([
+      '.section-head',
+      '.hero__copy > div',
+      '.hero__actions',
+      '.page-hero__inner > div',
+      '[data-ct]:not(.carousel__track)', /* dynamic slots reveal as blocks — data.js replaces their children */
+      '.carousel',                       /* the track itself is owned by the carousel's inline transform */
+      '.sermons__foot',
+      '.groups__copy > div',
+      '.info-card',
+      '.card'
+    ].join(', '));
+    var revealDone = function (el) {
+      el.classList.remove('reveal', 'is-in');
+      el.style.removeProperty('--rv-d');
+    };
+    var io = new IntersectionObserver(function (entries) {
+      var batches = []; /* siblings entering together stagger by parent */
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        io.unobserve(el);
+        var batch = null;
+        for (var i = 0; i < batches.length; i++) {
+          if (batches[i].parent === el.parentElement) batch = batches[i];
+        }
+        if (!batch) { batch = { parent: el.parentElement, n: 0 }; batches.push(batch); }
+        var delay = batch.n++ * 70;
+        el.style.setProperty('--rv-d', delay + 'ms');
+        el.classList.add('is-in');
+        setTimeout(function () { revealDone(el); }, delay + 700);
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    revealTargets.forEach(function (el) {
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+  }
+
   /* ---------- Werte wheel (pinned scroll section) ---------- */
   var werte = document.querySelector('.werte');
   if (werte && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -124,6 +165,12 @@
         'Ми любимо людей.'
       ]
     };
+    /* CMS-baked lines (deploy injects #werte-lines from data/content/werte.json) win
+       over the built-in copy — local dev without the bake keeps working */
+    var linesEl = document.getElementById('werte-lines');
+    if (linesEl) {
+      try { LINES_I18N = JSON.parse(linesEl.textContent); } catch (e) { /* keep built-in */ }
+    }
     var LINES = LINES_I18N[LANG] || LINES_I18N.de;
     if (wheel && items.length === 7 && panel) {
       var numEl = panel.querySelector('.werte__panel-num');

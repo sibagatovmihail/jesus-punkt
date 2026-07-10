@@ -1,0 +1,75 @@
+{
+  "_source": "jp.church.tools calendars [2, 3], fetched 2026-07-09T20:48Z",
+  "events": [
+    {
+      "id": "ct-1573-20260710",
+      "start": "2026-07-10T18:30:00",
+      "type": "jugend",
+      "title": "Elevate Jugend",
+      "meta": "Für Jugendliche zwischen 13 und 29 Jahren"
+    },
+    {
+      "id": "ct-1562-20260712",
+      "start": "2026-07-12T10:00:00",
+      "type": "gottesdienst",
+      "title": "Gottesdienst",
+      "meta": "Kruseshofer Str. 20 · vor Ort und im Livestream"
+    },
+    {
+      "id": "ct-1573-20260717",
+      "start": "2026-07-17T18:30:00",
+      "type": "jugend",
+      "title": "Elevate Jugend",
+      "meta": "Für Jugendliche zwischen 13 und 29 Jahren"
+    },
+    {
+      "id": "ct-1562-20260719",
+      "start": "2026-07-19T10:00:00",
+      "type": "gottesdienst",
+      "title": "Gottesdienst",
+      "meta": "Kruseshofer Str. 20 · vor Ort und im Livestream"
+    },
+    {
+      "id": "ct-1562-20260726",
+      "start": "2026-07-26T10:00:00",
+      "type": "gottesdienst",
+      "title": "Gottesdienst",
+      "meta": "Kruseshofer Str. 20 · vor Ort und im Livestream"
+    },
+    {
+      "id": "ct-1562-20260802",
+      "start": "2026-08-02T10:00:00",
+      "type": "gottesdienst",
+      "title": "Gottesdienst",
+      "meta": "Kruseshofer Str. 20 · vor Ort und im Livestream"
+    },
+    {
+      "id": "ct-1562-20260809",
+      "start": "2026-08-09T10:00:00",
+      "type": "gottesdienst",
+      "title": "Gottesdienst",
+      "meta": "Kruseshofer Str. 20 · vor Ort und im Livestream"
+    },
+    {
+      "id": "ct-1562-20260816",
+      "start": "2026-08-16T10:00:00",
+      "type": "gottesdienst",
+      "title": "Gottesdienst",
+      "meta": "Kruseshofer Str. 20 · vor Ort und im Livestream"
+    },
+    {
+      "id": "ct-1562-20260823",
+      "start": "2026-08-23T10:00:00",
+      "type": "gottesdienst",
+      "title": "Gottesdienst",
+      "meta": "Kruseshofer Str. 20 · vor Ort und im Livestream"
+    },
+    {
+      "id": "ct-1562-20260830",
+      "start": "2026-08-30T10:00:00",
+      "type": "gottesdienst",
+      "title": "Gottesdienst",
+      "meta": "Kruseshofer Str. 20 · vor Ort und im Livestream"
+    }
+  ]
+}

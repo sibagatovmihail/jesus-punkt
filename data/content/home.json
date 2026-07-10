@@ -1,0 +1,29 @@
+{
+  "de": {
+    "events_intro": "Der aktuelle Flyer zum Sonntagsgottesdienst und alle weiteren Termine auf einen Blick — für Kinder, Jugend, Familien und alle dazwischen.",
+    "sermons_intro": "Die letzten Predigten zum Nachhören und Weiterdenken — wann und wo du willst.",
+    "groups_title": "Dein Leben, deine Kleingruppe",
+    "groups_intro": "Glaube wächst im Miteinander. In unseren Hauskreisen findest du Menschen, die mit dir durchs Leben gehen — beim Essen, beim Reden, beim Beten. Über ganz Neubrandenburg verteilt.",
+    "groups_cta": "Finde deine Kleingruppe",
+    "werte_title": "Sieben Werte, die uns tragen",
+    "werte_intro": "Was uns als Gemeinde prägt — an jedem Sonntag und an allen Tagen dazwischen."
+  },
+  "en": {
+    "events_intro": "The current Sunday service flyer and all upcoming dates at a glance — for kids, youth, families and everyone in between.",
+    "sermons_intro": "The latest sermons to listen back to and reflect on — whenever and wherever you like.",
+    "groups_title": "Your life, your small group",
+    "groups_intro": "Faith grows in community. In our home groups you'll find people who walk through life with you — over meals, conversations and prayer. Spread across all of Neubrandenburg.",
+    "groups_cta": "Find your small group",
+    "werte_title": "Seven values that carry us",
+    "werte_intro": "What shapes us as a church — every Sunday and all the days in between."
+  },
+  "uk": {
+    "events_intro": "Актуальний флаєр недільного богослужіння та всі найближчі дати з одного погляду — для дітей, молоді, сімей і всіх між ними.",
+    "sermons_intro": "Останні проповіді, щоб переслухати й обміркувати — коли і де зручно.",
+    "groups_title": "Твоє життя — твоя мала група",
+    "groups_intro": "Віра зростає у спільності. У наших домашніх групах ти знайдеш людей, які йдуть по життю поруч із тобою — за їжею, розмовами й молитвою. По всьому Нойбранденбургу.",
+    "groups_cta": "Знайти свою малу групу",
+    "werte_title": "Сім цінностей, які нас тримають",
+    "werte_intro": "Те, що формує нас як громаду — щонеділі та в усі дні між ними."
+  }
+}

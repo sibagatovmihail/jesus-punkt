@@ -11,6 +11,18 @@ Instance (confirmed): **`https://jp.church.tools`** with the standard REST API (
 - There is **no `GET /publicgroups` list endpoint** in this version. Group signup data is per-group: `/publicgroups/{groupId}/form` (public registration form) or the group's homepage link via `GET /groups/{groupId}/grouphomepage`. So: list via `GET /groups?group_type_ids[]=…&visibility=…`, then resolve each group's signup URL.
 - `GET /whoami` is the proxy's token health check.
 
+**Implemented 2026-07-09 — events are LIVE without the Worker:** the public calendars are
+anonymous-readable, so `tools/ct-events.py` fetches the next 90 days at deploy into
+`data/ct/events.json` (mock schema), `js/data.js` prefers it (mock = fallback), and
+`pages.yml` re-runs daily via cron (`0 4 * * *`). Freshness ≤ 24 h, zero secrets, zero infra.
+The Worker (Phase 1) remains the plan for ≤ 5 min freshness, groups, and sermons — this
+deploy-time path then stays as the fallback.
+
+**Flyer (2026-07-09):** file attachments need auth, but the appointment **image** rides the
+anonymous payload — so the team convention is: set the flyer as the *image* of an appointment
+titled „Flyer" (or of the next Gottesdienst) in a public calendar. `tools/ct-events.py`
+downloads it at deploy into `data/ct/`. Team instructions: `docs/ct-team-guide.md`.
+
 ## 1. Architecture
 
 ```

@@ -1,0 +1,78 @@
+# Jesus Punkt — Sveltia CMS content model
+# Editing surface for the rare-change content (docs/cms-integration-plan.md §3).
+# Weekly content (Termine, Flyer, Hauskreise) lives in ChurchTools — NOT here.
+#
+# TODO before first login (plan §7): create the GitHub OAuth app, deploy the
+# sveltia-cms-auth Cloudflare Worker, then set base_url to the Worker URL.
+backend:
+  name: github
+  repo: sibagatovmihail/jesus-punkt
+  branch: main
+  # base_url: https://<sveltia-cms-auth-worker>  # ← TODO after OAuth setup
+
+media_folder: img/team
+public_folder: /img/team
+
+i18n:
+  structure: single_file
+  locales: [de, en, uk]
+  default_locale: de
+
+collections:
+  - name: inhalte
+    label: Inhalte
+    files:
+      - name: home
+        label: Startseite
+        file: data/content/home.json
+        i18n: true
+        fields:
+          - { name: events_intro, label: "Intro: Was als Nächstes ansteht", widget: text, i18n: true }
+          - { name: sermons_intro, label: "Intro: Predigten", widget: text, i18n: true }
+          - { name: groups_title, label: "Titel: Kleingruppen", widget: string, i18n: true, hint: "Kurz halten — große Überschrift" }
+          - { name: groups_intro, label: "Intro: Kleingruppen", widget: text, i18n: true }
+          - { name: groups_cta, label: "Button: Kleingruppen", widget: string, i18n: true, pattern: ['^.{1,40}$', 'max. 40 Zeichen'] }
+          - { name: werte_title, label: "Titel: Werte", widget: string, i18n: true }
+          - { name: werte_intro, label: "Intro: Werte", widget: text, i18n: true }
+      - name: werte
+        label: Die 7 Werte
+        file: data/content/werte.json
+        i18n: true
+        fields:
+          - name: values
+            label: Werte
+            widget: list
+            i18n: true
+            allow_add: false      # es sind genau sieben — das Rad kennt keine acht
+            fields:
+              - { name: name, label: Name, widget: string, i18n: true, pattern: ['^.{1,20}$', 'max. 20 Zeichen — muss in die Kreise passen'] }
+              - { name: line, label: Leitsatz, widget: string, i18n: true, pattern: ['^.{1,90}$', 'max. 90 Zeichen'] }
+      - name: spenden
+        label: Spenden (Bankverbindung)
+        file: data/content/spenden.json
+        i18n: true
+        fields:
+          - { name: kontoinhaber, label: Kontoinhaber, widget: string, i18n: false }
+          - { name: iban, label: IBAN, widget: string, i18n: false, pattern: ['^(DE[0-9 ]{20,27}|DE[·. ]+)$', 'Deutsche IBAN (DE + 20 Ziffern)'] }
+          - { name: verwendungszweck, label: Verwendungszweck, widget: string, i18n: false }
+      - name: kontakt
+        label: Kontaktdaten
+        file: data/content/kontakt.json
+        i18n: true
+        fields:
+          - { name: phone, label: Telefon, widget: string, i18n: false, hint: "Format: +49 …" }
+          - { name: email, label: E-Mail, widget: string, i18n: false, pattern: ['^\S+@\S+\.\S+$', 'gültige E-Mail-Adresse'] }
+      - name: team
+        label: Team
+        file: data/content/team.json
+        fields:
+          - name: people
+            label: Personen
+            widget: list
+            fields:
+              - { name: id, label: "ID (klein, mit Bindestrichen)", widget: string, pattern: ['^[a-z0-9-]+$', 'nur kleinbuchstaben-und-bindestriche'] }
+              - { name: name, label: Name, widget: string }
+              - { name: roles, label: Rollen, widget: list, field: { name: role, label: Rolle, widget: string } }
+              - { name: photo, label: "Foto (3:4 · nur mit Einverständnis!)", widget: image, required: false }
+              - { name: featured, label: "Groß hervorheben", widget: boolean, required: false }
+              - { name: note, label: Beschreibung, widget: text, required: false }

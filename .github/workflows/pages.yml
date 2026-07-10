@@ -7,6 +7,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *'  # daily rebuild so ChurchTools events stay fresh (UTC)
 
 permissions:
   contents: read
@@ -25,6 +27,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Fetch upcoming events + flyer from ChurchTools (public calendars, no token)
+        run: python3 tools/ct-events.py || echo "::warning::ct-events failed — deploying with the checked-in snapshot"
+
+      - name: Bake CMS content into the marked elements
+        run: python3 tools/content-bake.py
 
       - name: Generate /en/ and /uk/ locale trees + hreflang
         env:

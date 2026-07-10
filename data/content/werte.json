@@ -1,0 +1,98 @@
+{
+  "de": {
+    "values": [
+      {
+        "name": "Authentisch",
+        "line": "Wir leben, was wir sagen."
+      },
+      {
+        "name": "Relevant",
+        "line": "Wir sind am Puls der Zeit."
+      },
+      {
+        "name": "Hingegeben",
+        "line": "Wir geben Gott unser Bestes, nachdem er sein Bestes für uns gegeben hat."
+      },
+      {
+        "name": "Gastfreundlich",
+        "line": "Wir schaffen eine liebevolle „Welcome Home“-Atmosphäre."
+      },
+      {
+        "name": "Begeistert",
+        "line": "Die Freude an Gott ist unsere Stärke."
+      },
+      {
+        "name": "Großzügig",
+        "line": "Wir segnen, weil wir gesegnet sind."
+      },
+      {
+        "name": "Wertschätzend",
+        "line": "Wir lieben Menschen."
+      }
+    ]
+  },
+  "en": {
+    "values": [
+      {
+        "name": "Authentic",
+        "line": "We live what we say."
+      },
+      {
+        "name": "Relevant",
+        "line": "We keep our finger on the pulse of the times."
+      },
+      {
+        "name": "Devoted",
+        "line": "We give God our best — after he gave his best for us."
+      },
+      {
+        "name": "Hospitable",
+        "line": "We create a loving “Welcome Home” atmosphere."
+      },
+      {
+        "name": "Passionate",
+        "line": "The joy of the Lord is our strength."
+      },
+      {
+        "name": "Generous",
+        "line": "We bless because we are blessed."
+      },
+      {
+        "name": "Caring",
+        "line": "We love people."
+      }
+    ]
+  },
+  "uk": {
+    "values": [
+      {
+        "name": "Справжні",
+        "line": "Ми живемо тим, що говоримо."
+      },
+      {
+        "name": "Актуальні",
+        "line": "Ми тримаємо руку на пульсі часу."
+      },
+      {
+        "name": "Віддані",
+        "line": "Ми віддаємо Богові найкраще — адже Він віддав найкраще за нас."
+      },
+      {
+        "name": "Гостинні",
+        "line": "Ми створюємо атмосферу любові «Welcome Home»."
+      },
+      {
+        "name": "Натхненні",
+        "line": "Радість у Господі — наша сила."
+      },
+      {
+        "name": "Щедрі",
+        "line": "Ми благословляємо, бо самі благословенні."
+      },
+      {
+        "name": "Цінуємо людей",
+        "line": "Ми любимо людей."
+      }
+    ]
+  }
+}

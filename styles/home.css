@@ -7,8 +7,7 @@
   position: relative;
   min-height: 100svh;
   min-height: 100dvh;
-  display: flex;
-  align-items: flex-end;
+  display: flex; /* container stretches to full height; it centers the copy itself */
   background: var(--paper);
   overflow: hidden;
 }
@@ -28,17 +27,19 @@
 .hero__container {
   position: relative;
   width: 100%;
-  padding-bottom: clamp(3.5rem, 8vh, 5.625rem);
+  padding-block: calc(var(--header-h) + 1.5rem) clamp(3.5rem, 8vh, 5.625rem); /* never under the fixed header on short screens */
   display: flex;
-  align-items: flex-end;
-  gap: clamp(2rem, 5vw, 5.3125rem);
+  flex-direction: column;
+  justify-content: center; /* copy in the middle of the hero */
+  align-items: center;
+  text-align: center;
 }
 .hero__copy {
-  flex: 1;
   max-width: 56.9375rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9375rem; /* fig: 15 */
+  align-items: center;
+  gap: 0.9375rem; /* fig: 15 — title first, time + location underneath */
 }
 .hero__eyebrow span { font: 700 1rem / var(--lh-display) var(--font-display); color: var(--ink); }
 .hero__eyebrow-part { white-space: nowrap; } /* wrap only between address segments */
@@ -47,7 +48,12 @@
   color: var(--gold-text);
   margin-inline: 0.55em 0.65em;
 }
-.hero__actions { flex: none; }
+/* CTA anchored bottom-right, out of the centered flow */
+.hero__actions {
+  position: absolute;
+  right: var(--space-lg); /* container padding edge */
+  bottom: clamp(3.5rem, 8vh, 5.625rem);
+}
 
 /* highlight block behind »lebt« — vertically centered on the word */
 .hl {
@@ -68,19 +74,19 @@
 }
 
 @media (max-width: 48rem) {
-  .hero__container {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2.25rem;
-    padding-bottom: clamp(3rem, 9svh, 4.5rem);
-  }
+  .hero__container { gap: 2.25rem; }
   .hero__eyebrow span { font-size: 0.9375rem; line-height: 1.45; }
   /* once the line would wrap, stack the parts cleanly — no leading dots */
-  .hero__eyebrow > span { display: flex; flex-direction: column; gap: 0.25rem; }
+  .hero__eyebrow > span { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
   .hero__eyebrow-part + .hero__eyebrow-part::before { content: none; }
 }
+/* phone: CTA goes full width — copy aligns left and the title steps UP */
 @media (max-width: 37.5rem) {
-  .hero__actions { width: 100%; }
+  .hero__container { align-items: flex-start; text-align: left; }
+  .hero__copy { align-items: flex-start; }
+  .hero__eyebrow > span { align-items: flex-start; }
+  .hero__title .h1 { font-size: 3rem; }
+  .hero__actions { left: var(--space-lg); right: var(--space-lg); }
   .hero__actions .btn { width: 100%; }
 }
 
@@ -104,9 +110,39 @@
 }
 @media (max-width: 48rem) {
   /* single column: flyer drops BELOW the event rows */
-  .events__grid { display: flex; flex-direction: column; gap: 2rem; }
+  .events__grid { display: flex; flex-direction: column; align-items: stretch; gap: 2rem; }
   .events__flyer { order: 0; aspect-ratio: 525 / 297; align-self: auto; }
   .events__foot { margin-top: 1.75rem; }
+
+  /* event list becomes a 2-up card grid; the NEXT event is a double-height feature */
+  .events__grid .events__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 0.875rem;
+  }
+  .events__grid .events__list > li { display: grid; } /* stretch cards to the row track */
+  .events__grid .events__list > li:first-child { grid-row: span 2; }
+  .events__grid .events__list .event-row {
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.25rem;
+  }
+  .events__grid .events__list .event-row__when {
+    width: auto;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .events__grid .events__list > li:first-child .event-row__time { font-size: 1.75rem; }
+}
+@media (max-width: 31.25rem) {
+  /* narrow phones: the 2-up card grid gets cramped — back to one column */
+  .events__grid .events__list { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .events__grid .events__list > li:first-child { grid-row: auto; }
 }
 
 /* ================= KLEINGRUPPEN ================= */
@@ -136,8 +172,7 @@
 .werte {
   --wheel-t: 800ms;                                    /* one shared clock for ring, items and face */
   --wheel-ease: cubic-bezier(0.34, 1.25, 0.64, 1);     /* gentle overshoot — the wheel settles with a spring */
-  padding-block: 0 9.375rem;  /* 150px air below the wheel before the footer */
-  height: 420vh;              /* scroll runway: 7 stops, unhurried */
+  height: 420vh;              /* scroll runway: 7 stops, unhurried; section keeps the standard --section-pad */
 }
 .werte__sticky {
   position: sticky;
@@ -151,7 +186,9 @@
 .werte__head { align-items: center; text-align: center; }
 .werte__stage {
   margin-top: var(--space-lg);
-  padding-block: clamp(4rem, 12vh, 7.5rem); /* room for bubbles poking beyond the ring — top AND bottom */
+  /* room for bubbles poking beyond the ring — top AND bottom; one rule for ALL
+     widths, deliberately never overridden smaller on phones */
+  padding-block: clamp(5rem, 12svh, 7.5rem);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
   gap: var(--space-2xl);
@@ -261,9 +298,8 @@
 @media (max-width: 48rem) {
   .werte { height: 360vh; }
   .werte__sticky { padding-top: var(--header-h); } /* heading clears the fixed header */
-  .wheel { --wheel-size: min(28rem, 120vw, 44svh); }
+  .wheel { --wheel-size: min(28rem, 120vw, 40svh); }
   .werte__stage {
-    padding-block: 2rem 1.5rem;
     grid-template-columns: 1fr;
     gap: 3rem;
     justify-items: center;
@@ -285,7 +321,7 @@
 
 /* reduced motion: plain stacked list, no pin, no rotation */
 @media (prefers-reduced-motion: reduce) {
-  .werte { height: auto; padding-block: var(--section-pad); }
+  .werte { height: auto; }
   .werte__sticky { position: static; height: auto; overflow: visible; display: block; }
   .werte__stage { display: flex; flex-direction: column; align-items: center; gap: var(--space-lg); }
   .wheel { width: auto; height: auto; transform: none; display: flex; flex-direction: column; gap: var(--space-md); margin: 0; }

@@ -38,7 +38,8 @@ IGNORE = {
     "Kruseshofer Str. 20", "17036 Neubrandenburg", "Kruseshofer Str. 20 · 17036 Neubrandenburg",
     "+49 156 79133367", "info@jesus-punkt.de", "VIA Movement e.V.",
     "Jesus Punkt · VIA Movement e.V.", "DE·· ···· ···· ···· ···· ··", "IBAN",
-    "DE", "EN", "UK", "Deutsch", "English", "Українська",
+    "DE", "EN", "UK", "Deutsch", "English", "Українська", "Made by viasmedia",
+    "Website",  # honeypot label (visually hidden)
     "Impressum", "Datenschutz",  # legal links point at German pages — labels stay German
     "Philipp Strauch", "Tymur Sheikh", "Arne Brockmann", "Lydia Wegner", "Anja Maas",
     "Claus Wittnebel", "Ulrike Huhn", "Günther Seidt", "Saskia Lobert", "Yurii Uglov",
@@ -46,7 +47,7 @@ IGNORE = {
     "Annette &amp; Rainer Dwornik", "Ruth &amp; Stephan Fuhrer", "Simeon Schütz",
     "Friederike &amp; Claus", "Oststadt", "Innenstadt", "Broda", "Süd",
     "Welcome Home", "Spende Jesus Punkt", "Weißes Kreuz Beratungsstelle",
-    "© 2026 Jesus Punkt", "Elevate Youth",
+    "© 2026 Jesus Punkt", "© 2026 Jesus Punkt ·", "Elevate Youth",
     # sermon fallback cards — German recordings keep German titles
     "Kirche neu erleben", "Mehr als Sonntag", "Der Herr ist mein Hirte", "Neuanfang",
     "Die Freude an Gott", "Philipp Strauch · Pastor",
@@ -66,9 +67,35 @@ def has_words(s: str) -> bool:
     return len(re.findall(r"[A-Za-zÄÖÜäöüß]", s)) >= 3
 
 
+CONTENT_KEYS: set = set()  # keys merged from data/content — used by the bake/JS, not (only) markup
+
+
 def load_dict(loc: str) -> dict:
     p = ROOT / "data" / "i18n" / f"{loc}.json"
-    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    table = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    merge_content_translations(table, loc)
+    return table
+
+
+def merge_content_translations(table: dict, loc: str) -> None:
+    """CMS content (data/content/*.json, Sveltia single-file i18n layout) carries its
+    own translations per field — merge each German value → locale value pair into the
+    table so CMS-managed strings can never produce fallback warnings."""
+    def walk(de_node, loc_node):
+        if isinstance(de_node, dict):
+            for k, v in de_node.items():
+                walk(v, loc_node.get(k) if isinstance(loc_node, dict) else None)
+        elif isinstance(de_node, list):
+            for i, v in enumerate(de_node):
+                walk(v, loc_node[i] if isinstance(loc_node, list) and i < len(loc_node) else None)
+        elif isinstance(de_node, str) and isinstance(loc_node, str) and de_node.strip() and loc_node.strip():
+            table.setdefault(norm(de_node), loc_node)
+            CONTENT_KEYS.add(norm(de_node))
+
+    for p in sorted((ROOT / "data" / "content").glob("*.json")):
+        data = json.loads(p.read_text(encoding="utf-8"))
+        if "de" in data:
+            walk(data["de"], data.get(loc, {}))
 
 
 def split_segments(html: str):
@@ -178,7 +205,7 @@ def main():
             dest = ROOT / loc / src
             dest.parent.mkdir(parents=True, exist_ok=True)
             dest.write_text(result, encoding="utf-8")
-        unused = set(table) - report["used"]
+        unused = set(table) - report["used"] - CONTENT_KEYS  # content keys serve the bake/JS, not (only) markup
         if args.extract:
             for s in sorted(report["missing"]):
                 print(f"[{loc}] MISSING: {s}")
