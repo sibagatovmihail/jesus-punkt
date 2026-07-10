@@ -25,16 +25,20 @@ kommt keine Mail mehr an (Arnes wichtigster Hinweis).
    (kein Google-Workspace-Preset verwenden — Arne ist unsicher, ob es zu ihrer Instanz passt; die Werte oben sind die bestätigten.)
 3. Test: `dig MX jesus-punkt.de` gegen die Vercel-Nameserver, Probemail an info@jesus-punkt.de.
 
-### 2 · ⚠️ Formulare umziehen (BEVOR die Domain umzeigt!)
-Kontakt- und Spendenbescheinigungs-Formular posten an
-`https://jesus-punkt.de/wp-admin/admin-ajax.php` (Brizy im alten WordPress). Sobald
-jesus-punkt.de auf die neue statische Seite zeigt, ist dieser Endpoint **tot**.
-Optionen (Entscheidung vor Cutover):
-- **A (empfohlen):** beide Formulare auf **Web3Forms** umstellen (Skill vorhanden, ~1 h,
-  gleiche Ziel-Inbox info@jesus-punkt.de, kein WordPress mehr nötig).
-- B: das alte WordPress unter einer anderen Adresse weiterbetreiben (z. B. `alt.jesus-punkt.de`
-  beim bisherigen Host) und in `js/contact.js` nur die `ENDPOINT`-Domain tauschen.
-Danach den Kontaktformular-Absatz in `/datenschutz/` anpassen.
+### 2 · ⚠️ Formular-Endpoint sichern (BEVOR die Domain umzeigt!)
+**Entscheidung (2026-07-10): das WordPress bleibt** — Kontakt- und
+Spendenbescheinigungs-Formular posten weiter an den Brizy-Endpoint
+(`…/wp-admin/admin-ajax.php`). Sobald jesus-punkt.de auf die neue statische Seite
+zeigt, ist der Endpoint unter diesem Namen aber nicht mehr erreichbar. Deshalb vor Cutover:
+
+1. Mit Arne/altem Host klären: WordPress bleibt gehostet und bekommt eine neue Adresse,
+   z. B. **`alt.jesus-punkt.de`** (im Vercel-DNS ein A/CNAME-Record auf den alten Server;
+   WordPress-Site-URL + vHost + TLS-Zertifikat müssen dort auf den neuen Namen umgestellt
+   werden — das kann nur der WP-Admin).
+2. In `js/contact.js` die eine `ENDPOINT`-Konstante auf die neue Adresse tauschen.
+3. Kurz beide Formulare testen (je eine Probe-Nachricht).
+
+WordPress darf danach gern unsichtbar bleiben — es dient nur noch als Formular-Postfach.
 
 ### 3 · Website auf die Domain legen
 1. Repo → Settings → Pages → Custom domain `jesus-punkt.de` (+ *Enforce HTTPS* nach dem Zertifikat).

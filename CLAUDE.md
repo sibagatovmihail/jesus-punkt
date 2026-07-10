@@ -129,4 +129,4 @@ site/                 ARCHIVED v3 prototype (pre-Heritage-Gold) — do not exten
 assets/               source material (fig exports, current-site photos, renders)
 ```
 
-All asset/link paths are **root-absolute** (`/styles/…`, `/img/…`) — serve over HTTP (`python3 -m http.server`), not `file://`. Open TODOs before launch: Vereinsregister on /impressum/, Raveo webfont license, real team/gallery/hero photos (current ones are placeholders), GitHub OAuth app + auth Worker for /admin/ login, domain cutover (see docs/domain-migration.md — the Brizy form endpoint dies with the old WordPress site!).
+All asset/link paths are **root-absolute** (`/styles/…`, `/img/…`) — serve over HTTP (`python3 -m http.server`), not `file://`. Open TODOs before launch: Vereinsregister on /impressum/, Raveo webfont license, real team/gallery/hero photos (current ones are placeholders), GitHub OAuth app + auth Worker for /admin/ login, domain cutover (see docs/domain-migration.md — WordPress stays as form backend and needs its new hostname + one ENDPOINT swap in js/contact.js before the switch).

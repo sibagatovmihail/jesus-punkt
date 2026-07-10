@@ -10,6 +10,9 @@
 (function () {
   'use strict';
 
+  /* DECISION 2026-07-10: WordPress stays the form backend. At domain cutover this
+     host changes to the WP's new address (e.g. alt.jesus-punkt.de) — the ONE line
+     to touch; see docs/domain-migration.md §2. */
   var ENDPOINT = 'https://jesus-punkt.de/wp-admin/admin-ajax.php?nonce=&action=brizy_submit_form';
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
