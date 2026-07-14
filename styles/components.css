@@ -284,7 +284,7 @@
 /* ================= PAGE HERO (subpages) ================= */
 .page-hero {
   position: relative;
-  min-height: 50dvh;
+  min-height: 50svh; /* stable across Safari's toolbar show/hide — dvh would resize the hero mid-scroll */
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -321,7 +321,7 @@
 .page-hero__desc { max-width: 43.75rem; color: var(--ink-2); }
 
 @media (max-width: 48rem) {
-  .page-hero { min-height: 42dvh; }
+  .page-hero { min-height: 42svh; }
 }
 
 /* ================= TINTED SECTIONS + ZIGZAG TRANSITION =================
@@ -621,6 +621,12 @@ a.footer__item:hover { color: var(--creme); background-size: 100% 1px; }
   .footer { padding-top: 4rem; }
   .footer__grid { grid-template-columns: 1fr 1fr; row-gap: var(--space-xl); }
   .footer__col { text-align: left; }
+}
+@media (max-width: 37.5rem) {
+  /* endpoint: footer↔last-section gap doubled vs. the previous phone value
+     (last section's own bottom padding already grew via .section's +50%; this
+     covers the rest so the combined gap lands at 2× the old 7rem total) */
+  .footer { padding-top: 9.5rem; }
 }
 @media (max-width: 30rem) {
   .footer__grid { grid-template-columns: 1fr; }

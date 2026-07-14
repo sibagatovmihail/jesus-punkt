@@ -14,7 +14,10 @@
     eventsFallback: BASE + 'data/mock/events.json',
     flyer: BASE + 'data/ct/flyer.json',
     flyerFallback: BASE + 'data/mock/flyer.json',
-    sermons: BASE + 'data/mock/sermons.json',
+    /* sermons: fetched at deploy from the YouTube playlist (tools/yt-sermons.py,
+       daily cron in pages.yml) once YT_API_KEY + YT_PLAYLIST_ID are set; mock stays the fallback */
+    sermons: BASE + 'data/ct/sermons.json',
+    sermonsFallback: BASE + 'data/mock/sermons.json',
     groups: BASE + 'data/content/hauskreise.json', /* CMS-managed incl. enabled-toggle */
     team: BASE + 'data/content/team.json' /* CMS-managed (photos need explicit consent — never from CT) */
   };
@@ -296,7 +299,10 @@
         .then(renderFlyer).catch(function (e) { console.warn('[data] flyer:', e.message); });
     }
     if (document.querySelector('[data-ct="sermons"]')) {
-      getJSON(URLS.sermons).then(renderSermons).catch(function (e) { console.warn('[data] sermons:', e.message); });
+      getJSON(URLS.sermons)
+        .catch(function () { return getJSON(URLS.sermonsFallback); })
+        .then(renderSermons)
+        .catch(function (e) { console.warn('[data] sermons:', e.message); });
     }
     if (document.querySelector('[data-ct="groups"]')) {
       getJSON(URLS.groups).then(renderGroups).catch(function (e) { console.warn('[data] groups:', e.message); });

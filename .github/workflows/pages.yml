@@ -31,6 +31,12 @@ jobs:
       - name: Fetch upcoming events + flyer from ChurchTools (public calendars, no token)
         run: python3 tools/ct-events.py || echo "::warning::ct-events failed — deploying with the checked-in snapshot"
 
+      - name: Fetch latest sermons from the YouTube playlist
+        env:
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
+          YT_PLAYLIST_ID: ${{ secrets.YT_PLAYLIST_ID }}
+        run: python3 tools/yt-sermons.py || echo "::warning::yt-sermons failed or secrets not set — deploying with the mock fallback"
+
       - name: Bake CMS content into the marked elements
         run: python3 tools/content-bake.py
 

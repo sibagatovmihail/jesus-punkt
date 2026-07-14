@@ -229,9 +229,23 @@
         }, 180);
       };
 
+      /* Safari's toolbar show/hide changes window.innerHeight mid-scroll — recomputing the
+         runway against that live value made the wheel/pin geometry jump when scrolling back
+         up past the toolbar's reappear point. Cache it (page load = toolbar expanded, so this
+         matches the stable `svh` the CSS pin height uses) and only refresh on real viewport
+         changes (width moving = rotation), not the chrome bar's height-only churn. */
+      var werteVW = window.innerWidth;
+      var werteVH = window.innerHeight;
+      window.addEventListener('resize', function () {
+        if (window.innerWidth !== werteVW) {
+          werteVW = window.innerWidth;
+          werteVH = window.innerHeight;
+        }
+      });
+
       var onWerteScroll = function () {
         var rect = werte.getBoundingClientRect();
-        var runway = rect.height - window.innerHeight;
+        var runway = rect.height - werteVH;
         if (runway <= 0) { setActive(0); return; }
         var progress = Math.min(1, Math.max(0, -rect.top / runway));
         setActive(Math.min(6, Math.floor(progress * 7)));
@@ -247,7 +261,7 @@
         it.setAttribute('aria-label', it.querySelector('.bubble__name').textContent + UI.show);
         var focusValue = function () {
           var rect = werte.getBoundingClientRect();
-          var runway = rect.height - window.innerHeight;
+          var runway = rect.height - werteVH;
           if (runway <= 0) return;
           var top = rect.top + window.scrollY;
           window.scrollTo({ top: top + runway * ((i + 0.5) / 7), behavior: 'instant' });

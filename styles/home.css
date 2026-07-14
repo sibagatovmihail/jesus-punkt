@@ -5,8 +5,7 @@
 /* ================= HERO (full screen) ================= */
 .hero {
   position: relative;
-  min-height: 100svh;
-  min-height: 100dvh;
+  min-height: 100svh; /* stable across Safari's toolbar show/hide — dvh would resize the hero mid-scroll */
   display: flex; /* container stretches to full height; it centers the copy itself */
   background: var(--paper);
   overflow: hidden;
@@ -148,7 +147,7 @@
 .werte__sticky {
   position: sticky;
   top: 0;
-  height: 100dvh;
+  height: 100svh; /* stable unit — dvh vs. the parent's vh runway desynced on toolbar show/hide, collapsing the stage */
   display: flex;
   align-items: safe center;   /* on short screens: clip bottom, never the heading */
   overflow: hidden;           /* wheel edges may poke out of the stage, not the page */
