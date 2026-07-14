@@ -284,7 +284,7 @@
 /* ================= PAGE HERO (subpages) ================= */
 .page-hero {
   position: relative;
-  min-height: 50svh; /* stable across Safari's toolbar show/hide — dvh would resize the hero mid-scroll */
+  min-height: calc(var(--vh, 1vh) * 50); /* frozen viewport unit — see js/main.js setVH() */
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -307,7 +307,7 @@
   position: relative;
   width: 100%;
   padding-top: calc(var(--header-h) + 3rem);
-  padding-bottom: clamp(2.5rem, 6vh, 4rem);
+  padding-bottom: clamp(2.5rem, calc(var(--vh, 1vh) * 6), 4rem);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -321,7 +321,7 @@
 .page-hero__desc { max-width: 43.75rem; color: var(--ink-2); }
 
 @media (max-width: 48rem) {
-  .page-hero { min-height: 42svh; }
+  .page-hero { min-height: calc(var(--vh, 1vh) * 42); }
 }
 
 /* ================= TINTED SECTIONS + ZIGZAG TRANSITION =================

@@ -5,7 +5,7 @@
 /* ================= HERO (full screen) ================= */
 .hero {
   position: relative;
-  min-height: 100svh; /* stable across Safari's toolbar show/hide — dvh would resize the hero mid-scroll */
+  min-height: calc(var(--vh, 1vh) * 100); /* frozen viewport unit — see js/main.js setVH() */
   display: flex; /* container stretches to full height; it centers the copy itself */
   background: var(--paper);
   overflow: hidden;
@@ -26,7 +26,7 @@
 .hero__container {
   position: relative;
   width: 100%;
-  padding-block: calc(var(--header-h) + 1.5rem) clamp(3.5rem, 8vh, 5.625rem); /* never under the fixed header on short screens */
+  padding-block: calc(var(--header-h) + 1.5rem) clamp(3.5rem, calc(var(--vh, 1vh) * 8), 5.625rem); /* never under the fixed header on short screens */
   display: flex;
   flex-direction: column;
   justify-content: center; /* copy in the middle of the hero */
@@ -51,7 +51,7 @@
 .hero__actions {
   position: absolute;
   right: var(--space-lg); /* container padding edge */
-  bottom: clamp(3.5rem, 8vh, 5.625rem);
+  bottom: clamp(3.5rem, calc(var(--vh, 1vh) * 8), 5.625rem);
 }
 
 /* highlight block behind »lebt« — vertically centered on the word */
@@ -142,12 +142,12 @@
 .werte {
   --wheel-t: 800ms;                                    /* one shared clock for ring, items and face */
   --wheel-ease: cubic-bezier(0.34, 1.25, 0.64, 1);     /* gentle overshoot — the wheel settles with a spring */
-  height: 420vh;              /* scroll runway: 7 stops, unhurried; section keeps the standard --section-pad */
+  height: calc(var(--vh, 1vh) * 420); /* scroll runway: 7 stops, unhurried; section keeps the standard --section-pad */
 }
 .werte__sticky {
   position: sticky;
   top: 0;
-  height: 100svh; /* stable unit — dvh vs. the parent's vh runway desynced on toolbar show/hide, collapsing the stage */
+  height: calc(var(--vh, 1vh) * 100); /* same frozen unit as .werte's own height — never desyncs */
   display: flex;
   align-items: safe center;   /* on short screens: clip bottom, never the heading */
   overflow: hidden;           /* wheel edges may poke out of the stage, not the page */
@@ -158,7 +158,7 @@
   margin-top: var(--space-lg);
   /* room for bubbles poking beyond the ring — top AND bottom; one rule for ALL
      widths, deliberately never overridden smaller on phones */
-  padding-block: clamp(5rem, 12svh, 7.5rem);
+  padding-block: clamp(5rem, calc(var(--vh, 1vh) * 12), 7.5rem);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
   gap: var(--space-2xl);
@@ -196,7 +196,7 @@
 
 /* wheel geometry: items sit on a ring, ring turns via --wheel-turn */
 .wheel {
-  --wheel-size: min(26rem, 38vw, 50vh);
+  --wheel-size: min(26rem, 38vw, calc(var(--vh, 1vh) * 50));
   --wheel-turn: 0deg;
   position: relative;
   width: var(--wheel-size);
@@ -266,9 +266,9 @@
   .werte__stage { gap: var(--space-xl); grid-template-columns: minmax(0, 1fr) minmax(0, 19rem); }
 }
 @media (max-width: 48rem) {
-  .werte { height: 360vh; }
+  .werte { height: calc(var(--vh, 1vh) * 360); }
   .werte__sticky { padding-top: var(--header-h); } /* heading clears the fixed header */
-  .wheel { --wheel-size: min(28rem, 120vw, 40svh); }
+  .wheel { --wheel-size: min(28rem, 120vw, calc(var(--vh, 1vh) * 40)); }
   .werte__stage {
     grid-template-columns: 1fr;
     gap: 3rem;

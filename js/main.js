@@ -11,6 +11,31 @@
   };
   var UI = UI_I18N[LANG] || UI_I18N.de;
 
+  /* ---------- Stable viewport-height unit ----------
+     Safari's dvh/svh/vh all update the moment the toolbar animates, so any
+     rule (or JS measurement) reading them mid-scroll jumps or desyncs from a
+     sibling rule reading a different flavor. Freeze one pixel value in a
+     --vh custom property instead, refreshed only on a real viewport change
+     (width moves = rotation, not the chrome bar), and drive every
+     full-height rule + the Werte scroll math from that single source. */
+  var vhPx = window.innerHeight;
+  function setVH() {
+    vhPx = window.innerHeight;
+    /* --vh = 1% of the viewport, so CSS's calc(var(--vh) * 100) reconstructs
+       the full height — vhPx itself stays the full px figure for JS math */
+    document.documentElement.style.setProperty('--vh', (vhPx * 0.01) + 'px');
+  }
+  setVH();
+  (function () {
+    var vw0 = window.innerWidth;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth !== vw0) {
+        vw0 = window.innerWidth;
+        setVH();
+      }
+    });
+  })();
+
   /* ---------- Fixed header: solid once scrolled ---------- */
   var header = document.querySelector('.header');
   if (header) {
@@ -229,23 +254,12 @@
         }, 180);
       };
 
-      /* Safari's toolbar show/hide changes window.innerHeight mid-scroll — recomputing the
-         runway against that live value made the wheel/pin geometry jump when scrolling back
-         up past the toolbar's reappear point. Cache it (page load = toolbar expanded, so this
-         matches the stable `svh` the CSS pin height uses) and only refresh on real viewport
-         changes (width moving = rotation), not the chrome bar's height-only churn. */
-      var werteVW = window.innerWidth;
-      var werteVH = window.innerHeight;
-      window.addEventListener('resize', function () {
-        if (window.innerWidth !== werteVW) {
-          werteVW = window.innerWidth;
-          werteVH = window.innerHeight;
-        }
-      });
-
+      /* uses the shared, frozen vhPx (set up above) so the runway math always
+         agrees with the --vh value .werte's own CSS height is built from —
+         no separate cache, no chance of the two drifting apart */
       var onWerteScroll = function () {
         var rect = werte.getBoundingClientRect();
-        var runway = rect.height - werteVH;
+        var runway = rect.height - vhPx;
         if (runway <= 0) { setActive(0); return; }
         var progress = Math.min(1, Math.max(0, -rect.top / runway));
         setActive(Math.min(6, Math.floor(progress * 7)));
@@ -261,7 +275,7 @@
         it.setAttribute('aria-label', it.querySelector('.bubble__name').textContent + UI.show);
         var focusValue = function () {
           var rect = werte.getBoundingClientRect();
-          var runway = rect.height - werteVH;
+          var runway = rect.height - vhPx;
           if (runway <= 0) return;
           var top = rect.top + window.scrollY;
           window.scrollTo({ top: top + runway * ((i + 0.5) / 7), behavior: 'instant' });
