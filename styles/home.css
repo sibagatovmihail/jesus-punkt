@@ -149,7 +149,10 @@
   top: 0;
   height: calc(var(--vh, 1vh) * 100); /* same frozen unit as .werte's own height — never desyncs */
   display: flex;
-  align-items: safe center;   /* on short screens: clip bottom, never the heading */
+  align-items: center;   /* the section heading now scrolls in ahead of the pin (see markup),
+                            so the pinned box only ever needs to fit the wheel + panel — no
+                            "safe" fallback needed (Safari doesn't support the safe/unsafe
+                            keywords anyway, which is why it kept clipping the panel heading) */
   overflow: hidden;           /* wheel edges may poke out of the stage, not the page */
 }
 .werte__sticky > .container { width: 100%; }
@@ -267,7 +270,7 @@
 }
 @media (max-width: 48rem) {
   .werte { height: calc(var(--vh, 1vh) * 360); }
-  .werte__sticky { padding-top: var(--header-h); } /* heading clears the fixed header */
+  .werte__sticky { padding-top: var(--header-h); } /* pinned wheel clears the fixed header */
   .wheel { --wheel-size: min(28rem, 120vw, calc(var(--vh, 1vh) * 40)); }
   .werte__stage {
     grid-template-columns: 1fr;
