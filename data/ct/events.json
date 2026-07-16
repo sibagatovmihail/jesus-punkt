@@ -1,5 +1,5 @@
 {
-  "_source": "jp.church.tools calendars [2, 3], fetched 2026-07-14T21:19Z",
+  "_source": "jp.church.tools calendars [2, 3], fetched 2026-07-16T11:54Z",
   "events": [
     {
       "id": "ct-1573-20260717",
@@ -9,7 +9,7 @@
       "meta": "Für Jugendliche zwischen 13 und 29 Jahren"
     },
     {
-      "id": "ct-1562-20260719",
+      "id": "ct-1576-20260719",
       "start": "2026-07-19T10:00:00",
       "type": "gottesdienst",
       "title": "Gottesdienst",

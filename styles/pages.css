@@ -45,6 +45,7 @@
 /* team groups (Gemeindeleitung / Personal) — equal cards, the heading is the category;
    heading and arrows share one row, arrows flush right */
 .team-group { margin-top: var(--space-xl); }
+.team-group + .team-group { margin-top: var(--space-2xl); } /* clear break between the groups */
 .team-group__head {
   display: flex;
   align-items: center;
